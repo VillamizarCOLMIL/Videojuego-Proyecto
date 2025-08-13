@@ -37,3 +37,24 @@
 .boton a:hover {
   background-color: #3b82f6;
 }
+
+@media (max-width: 600px) {
+  .menu { max-width: 360px; }
+  .menu h1 { font-size: 22px; }
+  .boton a { padding: 12px; }
+}
+
+@media (min-width: 1024px) {
+  .menu { max-width: 700px; }
+  .menu h1 { font-size: 34px; }
+  .botones {
+    display: flex;              
+    gap: 12px;
+    justify-content: center;
+  }
+  .boton { margin: 0; }
+  .boton a {
+    width: 220px;              
+    padding: 14px 18px;
+  }
+}
