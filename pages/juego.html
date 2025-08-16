@@ -1,11 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+ <title>Minijuegos (Simple)</title>
+  <link rel="stylesheet" href="../css/juegos.css">
 </head>
 <body>
-    
+  <div class="wrap">
+    <h1>Minijuegos de Inglés </h1>
+
+    <div class="hud">
+      <div>Score: <span id="score">0</span></div>
+      <div>Lives: <span id="lives">3</span></div>
+      <div>Level: <span id="level">1</span></div>
+    </div>
+
+    <div id="menu" class="section">
+      <h2>Menú</h2>
+      <div class="grid">
+        <button data-start="quiz">Quiz básico</button>
+        <button data-start="memory">Memoria básica</button>
+        <button data-start="hangman">Ahorcado básico</button>
+        <button data-start="fillin">Completar (select)</button>
+      </div>
+    </div>
+
+    <!-- QUIZ -->
+    <div id="quiz" class="section hidden">
+      <div class="bar">
+        <h2>Quiz</h2>
+        <button data-back>Volver</button>
+      </div>
+      <div id="quizBox"></div>
+      <div class="bar">
+        <button id="quizNext" disabled>Siguiente</button>
+      </div>
+    </div>
+
+    <!-- MEMORY -->
+    <div id="memory" class="section hidden">
+      <div class="bar">
+        <h2>Memoria</h2>
+        <button data-back>Volver</button>
+      </div>
+      <div id="memoryBoard" class="memory"></div>
+      <div class="bar">
+        <button id="memoryRestart">Reiniciar</button>
+      </div>
+    </div>
+
+    <!-- HANGMAN -->
+    <div id="hangman" class="section hidden">
+      <div class="bar">
+        <h2>Ahorcado</h2>
+        <button data-back>Volver</button>
+      </div>
+      <div id="hangmanWord" class="word"></div>
+      <div>Intentos: <span id="tries">6</span></div>
+      <div class="guess">
+        <input id="guessInput" maxlength="1" placeholder="letra"/>
+        <button id="guessBtn">Probar</button>
+      </div>
+      <div class="bar">
+        <button id="hangmanRestart">Reiniciar</button>
+      </div>
+    </div>
+
+    <!-- FILL-IN (selects) -->
+    <div id="fillin" class="section hidden">
+      <div class="bar">
+        <h2>Completar</h2>
+        <button data-back>Volver</button>
+      </div>
+      <div id="fillinBox"></div>
+      <div class="bar">
+        <button id="fillinCheck">Comprobar</button>
+        <button id="fillinNext" disabled>Siguiente</button>
+      </div>
+    </div>
+
+    <div class="bar">
+      <a href="../index.html">Ir al menú principal</a>
+      <button id="resetAll">Reset general</button>
+    </div>
+  </div>
+
+
 </body>
+<script src="../script/script.js"></script>
 </html>
