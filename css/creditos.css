@@ -1,40 +1,80 @@
-*{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
+
 .lista-creditos p {
   margin: 8px 0;
   font-size: 1.1rem;
 }
-.fondo {
-  background-color: aqua;
-  height: 100vh;
-  display: flex;
+
+.videito {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.videito video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu {
   justify-content: center;
   align-items: center;
+  text-align: center;
+  margin: 15vw;
+  font-size: 20px;
+  color: #fff; 
+  background: rgba(0, 0, 0, 0.6); 
+  padding: 20px 40px;              
+  border-radius: 12px;             
+  border: 3px solid #812e9b;     
 }
-p{
-    font-family: sans-serif;
+
+p {
+  font-family: sans-serif;
 }
 
 @media (max-width: 600px) {
-  .menu { max-width: 360px; }
-  .menu h1 { font-size: 22px; }
-  .boton a { padding: 12px; }
+  .menu {
+    max-width: 360px;
+  }
+
+  .menu h1 {
+    font-size: 22px;
+  }
+
+  .boton a {
+    padding: 12px;
+  }
 }
 
 @media (min-width: 1024px) {
-  .menu { max-width: 700px; }
-  .menu h1 { font-size: 34px; }
+  .menu {
+    max-width: 700px;
+  }
+
+  .menu h1 {
+    font-size: 34px;
+  }
+
   .botones {
-    display: flex;              
+    display: flex;
     gap: 12px;
     justify-content: center;
   }
-  .boton { margin: 0; }
+
+  .boton {
+    margin: 0;
+  }
+
   .boton a {
-    width: 220px;              
+    width: 220px;
     padding: 14px 18px;
+    text-decoration: none;
+    color: whi;
   }
 }
