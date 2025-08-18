@@ -60,15 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setHUD(); showSection('#menu');
 
   });
-
-
   const decodeHTML = (str) => {
     const t = document.createElement('textarea');
     t.innerHTML = str;
     return t.value;
   };
-
-
   const WORD_POOL = (function () {
     const API = 'https://random-word-api.herokuapp.com/word';
     const USED_KEY = 'rw_used_v1';
@@ -91,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         words = await getJSON(`${API}?${params.toString()}`);
       } catch {
-        words = ['alpha','bravo','charlie','delta','echo','foxtrot','golf','hotel','india'];
+        words = ['alpha', 'bravo', 'charlie', 'delta', 'echo', 'foxtrot', 'golf', 'hotel', 'india'];
       }
       words = words
         .map(w => String(w).toLowerCase())
@@ -167,4 +163,166 @@ document.addEventListener('DOMContentLoaded', () => {
     restartBtn?.addEventListener('click', start);
 
     return { start, resetHistory: WORD_POOL.resetHistory };
+  })();
+  const quiz = (function () {
+    const USED_KEY = 'quiz_used_v1';
+    const used = getUsedSet(USED_KEY);
+    const box = $('#quizBox');
+    const nextBtn = $('#quizNext');
+    let current = null; // {q, correct, options}
+
+    const shuffle = (arr) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    async function fetchBatch() {
+      const data = await getJSON(`https://opentdb.com/api.php?amount=10&type=multiple`);
+      const fresh = data.results.filter(q => {
+        const id = `${q.category}|${q.question}`;
+        return !used.has(id);
+      });
+      fresh.forEach(q => used.add(`${q.category}|${q.question}`));
+      saveUsedSet(USED_KEY, used);
+      return fresh;
+    }
+
+    function renderQ() {
+      if (!box || !current) return;
+      box.innerHTML = '';
+      const qEl = document.createElement('h3');
+      qEl.className = 'quizQ';
+      qEl.textContent = current.q;
+
+      const opts = document.createElement('div');
+      opts.className = 'quizOptions';
+
+      current.options.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'quizOpt';
+        b.textContent = opt;
+        b.addEventListener('click', () => {
+          $$('.quizOpt').forEach(x => x.disabled = true);
+          if (opt === current.correct) {
+            b.classList.add('ok');
+            state.score += 3; state.level += 1;
+          } else {
+            b.classList.add('bad');
+            state.lives -= 1;
+          }
+          setHUD();
+          if (nextBtn) nextBtn.disabled = false;
+        });
+        opts.appendChild(b);
+      });
+
+      box.appendChild(qEl);
+      box.appendChild(opts);
+      if (nextBtn) nextBtn.disabled = true;
+    }
+
+    async function next() {
+      const batch = await fetchBatch();
+      if (!batch.length) { alert('No hay más preguntas nuevas'); showSection('#menu'); return; }
+      const q = batch[0];
+      const correct = decodeHTML(q.correct_answer);
+      const wrongs = q.incorrect_answers.map(decodeHTML);
+      current = {
+        q: decodeHTML(q.question),
+        correct,
+        options: shuffle([correct, ...wrongs])
+      };
+      renderQ();
+    }
+
+    nextBtn?.addEventListener('click', next);
+
+    async function start() { await next(); }
+    function resetHistory() { localStorage.removeItem(USED_KEY); }
+
+    return { start, resetHistory };
+  })();
+
+  const memory = (function () {
+    const USED_KEY = 'memory_used_v1';
+    const used = getUsedSet(USED_KEY);
+    const board = $('#memoryBoard');
+    const restartBtn = $('#memoryRestart');
+
+    let lock = false, first = null, pairsLeft = 0;
+
+    const shuffle = (arr) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    };
+
+    async function fetchCharacters(n = 6) {
+      const page = Math.floor(Math.random() * 42) + 1;
+      const data = await getJSON(`https://rickandmortyapi.com/api/character?page=${page}`);
+      let pool = data.results.filter(c => !used.has(String(c.id)));
+      if (pool.length < n) { used.clear(); pool = data.results; }
+      const chosen = shuffle(pool).slice(0, n);
+      chosen.forEach(c => used.add(String(c.id)));
+      saveUsedSet(USED_KEY, used);
+      return chosen.map(c => ({ id: String(c.id), img: c.image, name: c.name }));
+    }
+
+    function renderBoard(cards) {
+      if (!board) return;
+      board.innerHTML = '';
+      cards.forEach((card, idx) => {
+        const el = document.createElement('button');
+        el.className = 'memory-card';
+        el.dataset.key = card.key;
+        el.dataset.idx = String(idx);
+        el.innerHTML = `
+          <div class="front"></div>
+          <div class="back"><img src="${card.img}" alt=""></div>
+        `;
+        el.addEventListener('click', () => onFlip(el));
+        board.appendChild(el);
+      });
+    }
+
+    function onFlip(el) {
+      if (lock || el.classList.contains('matched') || el.classList.contains('flipped')) return;
+      el.classList.add('flipped');
+      if (!first) { first = el; return; }
+      lock = true;
+      const match = first.dataset.key === el.dataset.key && first !== el;
+      setTimeout(() => {
+        if (match) {
+          first.classList.add('matched');
+          el.classList.add('matched');
+          pairsLeft--;
+          state.score += 2;
+          if (pairsLeft === 0) { state.level += 1; showSection('#menu'); }
+        } else {
+          first.classList.remove('flipped');
+          el.classList.remove('flipped');
+          state.lives -= 1;
+          if (state.lives <= 0) { alert('Game Over'); showSection('#menu'); }
+        }
+        setHUD();
+        first = null; lock = false;
+      }, 600);
+    }
+
+    async function start() {
+      const base = await fetchCharacters(6); // 6 pares
+      pairsLeft = base.length;
+      const doubled = shuffle([...base, ...base].map((c) => ({ key: c.id, img: c.img })));
+      renderBoard(doubled);
+    }
+
+    restartBtn?.addEventListener('click', start);
+    function resetHistory() { localStorage.removeItem(USED_KEY); }
+
+    return { start, resetHistory };
   })();
