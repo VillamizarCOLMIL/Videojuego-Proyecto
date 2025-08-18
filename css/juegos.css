@@ -213,3 +213,67 @@ input {
   .bgvid-wrap > .bgvid-video { display: none !important; }
   .bgvid-wrap > .bgvid-fallback { display: block; }
 }
+
+
+#memoryBoard {
+  display: grid;
+  gap: 10px;
+
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  align-items: stretch;
+}
+
+
+.memory-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  min-height: 90px;
+  border-radius: 12px;
+  border: 2px solid #ccc;
+  background: #f7f7f7;
+  font-weight: 700;
+
+  font-size: clamp(16px, 4.2vw, 28px);
+  line-height: 1.2;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+.memory-card.flipped,
+.memory-card.matched {
+  background: #fff;
+  border-color: #6aa84f; 
+}
+
+.memory-card.matched {
+  opacity: 0.9;
+}
+
+
+@media (max-width: 420px) {
+  #memoryBoard {
+    gap: 8px;
+    grid-template-columns: repeat(2, 1fr); 
+  }
+  .memory-card {
+    min-height: 120px;      /* más altas */
+    font-size: clamp(18px, 5.5vw, 30px);
+    border-width: 3px;
+  }
+}
+
+
+@media (min-width: 421px) and (max-width: 640px) {
+  #memoryBoard {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .memory-card {
+    min-height: 110px;
+  }
+}
+@media (max-width: 360px) {
+  .memory-card { font-size: clamp(18px, 6vw, 32px); min-height: 130px; }
+}
