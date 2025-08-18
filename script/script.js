@@ -54,3 +54,61 @@ document.addEventListener('DOMContentLoaded', () => {
     state.score = 0; state.lives = 3; state.levelIdx = 0; state.correctStreak = 0;
     setHUD(); showSection('#menu');
   });
+
+  const LEVELS = [
+    { name: 'A1.0', words: [
+      ['red','rojo'], ['blue','azul'], ['green','verde'], ['yellow','amarillo'],
+      ['cat','gato'], ['dog','perro'], ['bird','pájaro'], ['fish','pez'],
+      ['book','libro'], ['pen','bolígrafo'], ['table','mesa'], ['door','puerta']
+    ]},
+    { name: 'A1.1', words: [
+      ['apple','manzana'], ['house','casa'], ['car','carro'], ['school','escuela'],
+      ['chair','silla'], ['bag','bolso'], ['milk','leche'], ['water','agua'],
+      ['sun','sol'], ['rain','lluvia'], ['wind','viento'], ['snow','nieve']
+    ]},
+    { name: 'A1.2', words: [
+      ['family','familia'], ['mother','madre'], ['father','padre'], ['brother','hermano'],
+      ['sister','hermana'], ['baby','bebé'], ['child','niño'], ['friend','amigo'],
+      ['happy','feliz'], ['sad','triste'], ['big','grande'], ['small','pequeño']
+    ]},
+    { name: 'A1.3', words: [
+      ['teacher','profesor'], ['student','estudiante'], ['classroom','salón'],
+      ['window','ventana'], ['floor','piso'], ['ceiling','techo'], ['board','pizarra'],
+      ['phone','teléfono'], ['music','música'], ['game','juego'], ['ball','pelota'], ['toy','juguete']
+    ]},
+    { name: 'A1.4', words: [
+      ['shirt','camisa'], ['pants','pantalón'], ['shoe','zapato'], ['dress','vestido'],
+      ['hat','sombrero'], ['jacket','chaqueta'], ['sock','media'], ['skirt','falda'],
+      ['coat','abrigo'], ['belt','cinturón'], ['boots','botas'], ['sweater','suéter']
+    ]},
+    { name: 'A1.5', words: [
+      ['head','cabeza'], ['hand','mano'], ['arm','brazo'], ['leg','pierna'],
+      ['foot','pie'], ['eye','ojo'], ['nose','nariz'], ['mouth','boca'],
+      ['ear','oreja'], ['hair','cabello'], ['finger','dedo'], ['knee','rodilla']
+    ]},
+    { name: 'A2.1', words: [
+      ['market','mercado'], ['park','parque'], ['street','calle'], ['city','ciudad'],
+      ['bank','banco'], ['library','biblioteca'], ['post office','oficina de correos'], ['store','tienda'],
+      ['bridge','puente'], ['river','río'], ['square','plaza'], ['museum','museo']
+    ]},
+    { name: 'A2.2', words: [
+      ['kitchen','cocina'], ['bedroom','dormitorio'], ['bathroom','baño'], ['living room','sala'],
+      ['table','mesa'], ['chair','silla'], ['sofa','sofá'], ['bed','cama'],
+      ['fridge','nevera'], ['stove','estufa'], ['mirror','espejo'], ['shower','ducha']
+    ]},
+    { name: 'A2.3', words: [
+      ['train','tren'], ['bus','bus'], ['ticket','boleto'], ['station','estación'],
+      ['airport','aeropuerto'], ['plane','avión'], ['taxi','taxi'], ['bicycle','bicicleta'],
+      ['map','mapa'], ['hotel','hotel'], ['passport','pasaporte'], ['luggage','equipaje']
+    ]},
+    { name: 'A2.4', words: [
+      ['doctor','médico'], ['nurse','enfermera'], ['hospital','hospital'], ['medicine','medicina'],
+      ['football','fútbol'], ['basketball','baloncesto'], ['swim','nadar'], ['run','correr'],
+      ['computer','computador'], ['keyboard','teclado'], ['mouse','ratón'], ['screen','pantalla']
+    ]},
+    { name: 'A2.5', words: [
+      ['yesterday','ayer'], ['tomorrow','mañana (día)'], ['afternoon','tarde'], ['evening','tarde-noche'],
+      ['weekend','fin de semana'], ['sometimes','a veces'], ['always','siempre'], ['never','nunca'],
+      ['restaurant','restaurante'], ['menu','menú'], ['waiter','mesero'], ['bill','cuenta']
+    ]},
+  ];
