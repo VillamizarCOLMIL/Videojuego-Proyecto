@@ -50,33 +50,44 @@ body {
   background-color: #3b82f6;
 }
 
-@media (max-width: 600px) {
-  .menu h1 {
-    font-size: 22px;
-  }
 
-  .boton a {
-    padding: 12px;
-  }
+.bgvid-wrap {
+  position: relative;
+  width: 100%;
+  height: 60vh;          
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;    
 }
 
-@media (min-width: 1024px) {
-  .menu h1 {
-    font-size: 34px;
-  }
 
-  .botones {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-  }
+.bgvid-wrap > .bgvid-video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
+}
 
-  .boton {
-    margin: 0;
-  }
 
-  .boton a {
-    width: 220px;
-    padding: 14px 18px;
-  }
+.bgvid-wrap > .bgvid-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+
+.bgvid-content {
+  position: relative;
+  z-index: 1;           
+  color: #fff;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .bgvid-wrap > .bgvid-video { display: none !important; }
+  .bgvid-wrap > .bgvid-fallback { display: block; }
 }
