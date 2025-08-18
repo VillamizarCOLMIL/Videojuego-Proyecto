@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const $  = s => document.querySelector(s);
+  const $ = s => document.querySelector(s);
   const $$ = s => Array.from(document.querySelectorAll(s));
 
   const scoreEl = $('#score');
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     $(id)?.classList.remove('hidden');
   }
   function gameOver() {
-    alert('¡Game Over! Intenta de nuevo 😊');
+    alert('¡PERDISTE CADETE, 22 DE PECHO!!!!!');
     state.score = 0; state.lives = 3; state.levelIdx = 0; state.correctStreak = 0;
     setHUD(); showSection('#menu');
   }
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
       state.correctStreak = 0;
       if (state.levelIdx < LEVELS.length - 1) {
         state.levelIdx++;
-        alert(`¡Súper! Subiste a ${LEVELS[state.levelIdx].name}`);
+        alert(`¡Eso cadete! Subiste a ${LEVELS[state.levelIdx].name}`);
       }
     }
     setHUD();
@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
   $$('#menu [data-start]').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const which = e.currentTarget.getAttribute('data-start');
-      if (which === 'quiz')   { showSection('#quiz');   await quiz.start(); }
+      if (which === 'quiz') { showSection('#quiz'); await quiz.start(); }
       if (which === 'memory') { showSection('#memory'); await memory.start(); }
-      if (which === 'hangman'){ showSection('#hangman');await hangman.start(); }
+      if (which === 'hangman') { showSection('#hangman'); await hangman.start(); }
       if (which === 'fillin') { showSection('#fillin'); await fillin.start(); }
     });
   });
@@ -55,61 +55,83 @@ document.addEventListener('DOMContentLoaded', () => {
     setHUD(); showSection('#menu');
   });
   const LEVELS = [
-    { name: 'A1.0', words: [
-      ['red','rojo'], ['blue','azul'], ['green','verde'], ['yellow','amarillo'],
-      ['cat','gato'], ['dog','perro'], ['bird','pájaro'], ['fish','pez'],
-      ['book','libro'], ['pen','bolígrafo'], ['table','mesa'], ['door','puerta']
-    ]},
-    { name: 'A1.1', words: [
-      ['apple','manzana'], ['house','casa'], ['car','carro'], ['school','escuela'],
-      ['chair','silla'], ['bag','bolso'], ['milk','leche'], ['water','agua'],
-      ['sun','sol'], ['rain','lluvia'], ['wind','viento'], ['snow','nieve']
-    ]},
-    { name: 'A1.2', words: [
-      ['family','familia'], ['mother','madre'], ['father','padre'], ['brother','hermano'],
-      ['sister','hermana'], ['baby','bebé'], ['child','niño'], ['friend','amigo'],
-      ['happy','feliz'], ['sad','triste'], ['big','grande'], ['small','pequeño']
-    ]},
-    { name: 'A1.3', words: [
-      ['teacher','profesor'], ['student','estudiante'], ['classroom','salón'],
-      ['window','ventana'], ['floor','piso'], ['ceiling','techo'], ['board','pizarra'],
-      ['phone','teléfono'], ['music','música'], ['game','juego'], ['ball','pelota'], ['toy','juguete']
-    ]},
-    { name: 'A1.4', words: [
-      ['shirt','camisa'], ['pants','pantalón'], ['shoe','zapato'], ['dress','vestido'],
-      ['hat','sombrero'], ['jacket','chaqueta'], ['sock','media'], ['skirt','falda'],
-      ['coat','abrigo'], ['belt','cinturón'], ['boots','botas'], ['sweater','suéter']
-    ]},
-    { name: 'A1.5', words: [
-      ['head','cabeza'], ['hand','mano'], ['arm','brazo'], ['leg','pierna'],
-      ['foot','pie'], ['eye','ojo'], ['nose','nariz'], ['mouth','boca'],
-      ['ear','oreja'], ['hair','cabello'], ['finger','dedo'], ['knee','rodilla']
-    ]},
-    { name: 'A2.1', words: [
-      ['market','mercado'], ['park','parque'], ['street','calle'], ['city','ciudad'],
-      ['bank','banco'], ['library','biblioteca'], ['post office','oficina de correos'], ['store','tienda'],
-      ['bridge','puente'], ['river','río'], ['square','plaza'], ['museum','museo']
-    ]},
-    { name: 'A2.2', words: [
-      ['kitchen','cocina'], ['bedroom','dormitorio'], ['bathroom','baño'], ['living room','sala'],
-      ['table','mesa'], ['chair','silla'], ['sofa','sofá'], ['bed','cama'],
-      ['fridge','nevera'], ['stove','estufa'], ['mirror','espejo'], ['shower','ducha']
-    ]},
-    { name: 'A2.3', words: [
-      ['train','tren'], ['bus','bus'], ['ticket','boleto'], ['station','estación'],
-      ['airport','aeropuerto'], ['plane','avión'], ['taxi','taxi'], ['bicycle','bicicleta'],
-      ['map','mapa'], ['hotel','hotel'], ['passport','pasaporte'], ['luggage','equipaje']
-    ]},
-    { name: 'A2.4', words: [
-      ['doctor','médico'], ['nurse','enfermera'], ['hospital','hospital'], ['medicine','medicina'],
-      ['football','fútbol'], ['basketball','baloncesto'], ['swim','nadar'], ['run','correr'],
-      ['computer','computador'], ['keyboard','teclado'], ['mouse','ratón'], ['screen','pantalla']
-    ]},
-    { name: 'A2.5', words: [
-      ['yesterday','ayer'], ['tomorrow','mañana (día)'], ['afternoon','tarde'], ['evening','tarde-noche'],
-      ['weekend','fin de semana'], ['sometimes','a veces'], ['always','siempre'], ['never','nunca'],
-      ['restaurant','restaurante'], ['menu','menú'], ['waiter','mesero'], ['bill','cuenta']
-    ]},
+    {
+      name: 'A1.0', words: [
+        ['red', 'rojo'], ['blue', 'azul'], ['green', 'verde'], ['yellow', 'amarillo'],
+        ['cat', 'gato'], ['dog', 'perro'], ['bird', 'pájaro'], ['fish', 'pez'],
+        ['book', 'libro'], ['pen', 'bolígrafo'], ['table', 'mesa'], ['door', 'puerta']
+      ]
+    },
+    {
+      name: 'A1.1', words: [
+        ['apple', 'manzana'], ['house', 'casa'], ['car', 'carro'], ['school', 'escuela'],
+        ['chair', 'silla'], ['bag', 'bolso'], ['milk', 'leche'], ['water', 'agua'],
+        ['sun', 'sol'], ['rain', 'lluvia'], ['wind', 'viento'], ['snow', 'nieve']
+      ]
+    },
+    {
+      name: 'A1.2', words: [
+        ['family', 'familia'], ['mother', 'madre'], ['father', 'padre'], ['brother', 'hermano'],
+        ['sister', 'hermana'], ['baby', 'bebé'], ['child', 'niño'], ['friend', 'amigo'],
+        ['happy', 'feliz'], ['sad', 'triste'], ['big', 'grande'], ['small', 'pequeño']
+      ]
+    },
+    {
+      name: 'A1.3', words: [
+        ['teacher', 'profesor'], ['student', 'estudiante'], ['classroom', 'salón'],
+        ['window', 'ventana'], ['floor', 'piso'], ['ceiling', 'techo'], ['board', 'pizarra'],
+        ['phone', 'teléfono'], ['music', 'música'], ['game', 'juego'], ['ball', 'pelota'], ['toy', 'juguete']
+      ]
+    },
+    {
+      name: 'A1.4', words: [
+        ['shirt', 'camisa'], ['pants', 'pantalón'], ['shoe', 'zapato'], ['dress', 'vestido'],
+        ['hat', 'sombrero'], ['jacket', 'chaqueta'], ['sock', 'media'], ['skirt', 'falda'],
+        ['coat', 'abrigo'], ['belt', 'cinturón'], ['boots', 'botas'], ['sweater', 'suéter']
+      ]
+    },
+    {
+      name: 'A1.5', words: [
+        ['head', 'cabeza'], ['hand', 'mano'], ['arm', 'brazo'], ['leg', 'pierna'],
+        ['foot', 'pie'], ['eye', 'ojo'], ['nose', 'nariz'], ['mouth', 'boca'],
+        ['ear', 'oreja'], ['hair', 'cabello'], ['finger', 'dedo'], ['knee', 'rodilla']
+      ]
+    },
+    {
+      name: 'A2.1', words: [
+        ['market', 'mercado'], ['park', 'parque'], ['street', 'calle'], ['city', 'ciudad'],
+        ['bank', 'banco'], ['library', 'biblioteca'], ['post office', 'oficina de correos'], ['store', 'tienda'],
+        ['bridge', 'puente'], ['river', 'río'], ['square', 'plaza'], ['museum', 'museo']
+      ]
+    },
+    {
+      name: 'A2.2', words: [
+        ['kitchen', 'cocina'], ['bedroom', 'dormitorio'], ['bathroom', 'baño'], ['living room', 'sala'],
+        ['table', 'mesa'], ['chair', 'silla'], ['sofa', 'sofá'], ['bed', 'cama'],
+        ['fridge', 'nevera'], ['stove', 'estufa'], ['mirror', 'espejo'], ['shower', 'ducha']
+      ]
+    },
+    {
+      name: 'A2.3', words: [
+        ['train', 'tren'], ['bus', 'bus'], ['ticket', 'boleto'], ['station', 'estación'],
+        ['airport', 'aeropuerto'], ['plane', 'avión'], ['taxi', 'taxi'], ['bicycle', 'bicicleta'],
+        ['map', 'mapa'], ['hotel', 'hotel'], ['passport', 'pasaporte'], ['luggage', 'equipaje']
+      ]
+    },
+    {
+      name: 'A2.4', words: [
+        ['doctor', 'médico'], ['nurse', 'enfermera'], ['hospital', 'hospital'], ['medicine', 'medicina'],
+        ['football', 'fútbol'], ['basketball', 'baloncesto'], ['swim', 'nadar'], ['run', 'correr'],
+        ['computer', 'computador'], ['keyboard', 'teclado'], ['mouse', 'ratón'], ['screen', 'pantalla']
+      ]
+    },
+    {
+      name: 'A2.5', words: [
+        ['yesterday', 'ayer'], ['tomorrow', 'mañana (día)'], ['afternoon', 'tarde'], ['evening', 'tarde-noche'],
+        ['weekend', 'fin de semana'], ['sometimes', 'a veces'], ['always', 'siempre'], ['never', 'nunca'],
+        ['restaurant', 'restaurante'], ['menu', 'menú'], ['waiter', 'mesero'], ['bill', 'cuenta']
+      ]
+    },
   ];
   async function getDistractorsLike(word, n = 3) {
     try {
@@ -127,7 +149,7 @@ document.addEventListener('DOMContentLoaded', () => {
       shuffle(pool); return pool.slice(0, n);
     }
   }
-  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
   function pickFromLevel(k = 1) { const arr = LEVELS[state.levelIdx].words.slice(); shuffle(arr); return arr.slice(0, k); }
 
 
@@ -224,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
           first.disabled = true; btn.disabled = true;
           pairsLeft--; onCorrect(1);
           if (pairsLeft === 0) {
-            alert('¡Excelente! Completaste todas las parejas.');
+            alert('¡Excelente cadete! Completaste todas las parejas, ahora a darle 10 vueltas a la cancha.');
             showSection('#menu');
           }
         } else {
@@ -241,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function start() {
-      const PAIRS = isSmallPhone() ? 4 : 6; 
+      const PAIRS = isSmallPhone() ? 4 : 6;
       const pairs = pickFromLevel(PAIRS);
       const chosen = pairs.length >= PAIRS ? pairs.slice(0, PAIRS) : pairs;
       pairsLeft = chosen.length;
@@ -263,10 +285,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return { start };
   })();
   const hangman = (() => {
-    const wordEl  = $('#hangmanWord');
+    const wordEl = $('#hangmanWord');
     const triesEl = $('#tries');
     const inputEl = $('#guessInput');
-    const btnEl   = $('#guessBtn');
+    const btnEl = $('#guessBtn');
     const restart = $('#hangmanRestart');
 
     let hintEl = $('#hangmanHint');
@@ -285,8 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function start() {
       const { en, es } = chooseFromLevel();
       secret = en.toLowerCase();
-      shown  = secret.split('').map(() => '_');
-      tries  = 6;
+      shown = secret.split('').map(() => '_');
+      tries = 6;
       hintEl.textContent = `Pista: ${es}`;
       draw();
     }
@@ -305,11 +327,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tries--;
         if (tries <= 0) {
           if (onWrong()) return;
-          return start(); 
+          return start();
         }
       } else if (shown.join('') === secret) {
         onCorrect(2);
-        alert('¡Muy bien! Palabra completada.');
+        alert('¡Muy bien Cadete! Palabra completada.');
         return showSection('#menu');
       }
       draw();
@@ -325,12 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const fillin = (() => {
     const box = $('#fillinBox');
     const checkBtn = $('#fillinCheck');
-    const nextBtn  = $('#fillinNext');
-    let current = null;    
-    let answered = false;  
+    const nextBtn = $('#fillinNext');
+    let current = null;
+    let answered = false;
 
     function templatesFor(en) {
-      const colors = ['red','blue','green','yellow'];
+      const colors = ['red', 'blue', 'green', 'yellow'];
       if (colors.includes(en)) {
         return [`The ball is ___ .`, `The door is ___ .`, `This apple is ___ .`];
       }
@@ -342,11 +364,11 @@ document.addEventListener('DOMContentLoaded', () => {
       box.innerHTML = '';
       const [[en]] = pickFromLevel(1);
       const tpls = templatesFor(en);
-      const tpl  = tpls[Math.floor(Math.random() * tpls.length)];
+      const tpl = tpls[Math.floor(Math.random() * tpls.length)];
       const sentenceMasked = tpl.replace('___', '_____');
 
       let options = [en, ...(await getDistractorsLike(en, 3))];
-      options = Array.from(new Set(options)).slice(0,4);
+      options = Array.from(new Set(options)).slice(0, 4);
       while (options.length < 4) {
         const extra = pickFromLevel(1)[0][0];
         if (!options.includes(extra) && extra !== en) options.push(extra);
@@ -373,7 +395,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function check() {
-      if (answered) return; 
+      if (answered) return;
       const sel = box.querySelector('.fillinOpt.selected');
       if (!sel) return;
       answered = true;
@@ -392,7 +414,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { start };
   })();
 
-  // Init
+
   setHUD();
   showSection('#menu');
 });
