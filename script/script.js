@@ -154,3 +154,50 @@ document.addEventListener('DOMContentLoaded', () => {
   function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
   function pickFromLevel(k = 1) { const arr = LEVELS[state.levelIdx].words.slice(); shuffle(arr); return arr.slice(0, k); }
 });
+
+  const quiz = (() => {
+    const box = $('#quizBox');
+    const nextBtn = $('#quizNext');
+    let current = null;
+
+    async function next() {
+      box.innerHTML = '';
+      const [[en, es]] = pickFromLevel(1);
+      let options = [en, ...(await getDistractorsLike(en, 3))];
+      options = Array.from(new Set(options));
+      while (options.length < 4) {
+        const extra = pickFromLevel(1)[0][0];
+        if (!options.includes(extra) && extra !== en) options.push(extra);
+      }
+      shuffle(options);
+      current = { es, en, options };
+
+      const h = document.createElement('h3'); h.textContent = `¿Cómo se dice “${es}” en inglés?`;
+      const opts = document.createElement('div'); opts.className = 'quizOptions';
+
+      options.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'quizOpt'; b.textContent = opt;
+        b.addEventListener('click', () => {
+          $$('#quizBox .quizOpt').forEach(x => x.disabled = true);
+          if (opt === current.en) { b.classList.add('ok'); onCorrect(2); }
+          else {
+            b.classList.add('bad');
+            $$('#quizBox .quizOpt').forEach(x => { if (x.textContent === current.en) x.classList.add('ok'); });
+            if (onWrong()) return;
+          }
+          nextBtn.disabled = false;
+        });
+        opts.appendChild(b);
+      });
+
+      box.appendChild(h); box.appendChild(opts);
+      nextBtn.disabled = true;
+    }
+
+    nextBtn?.addEventListener('click', next);
+    async function start() { await next(); }
+    return { start };
+  })();
+
+  
