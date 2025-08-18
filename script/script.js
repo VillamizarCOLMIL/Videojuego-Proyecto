@@ -326,3 +326,99 @@ document.addEventListener('DOMContentLoaded', () => {
 
     return { start, resetHistory };
   })();
+
+  const fillin = (function () {
+    const USED_KEY = 'fillin_used_v1';
+    const used = getUsedSet(USED_KEY);
+    const box = $('#fillinBox');
+    const checkBtn = $('#fillinCheck');
+    const nextBtn = $('#fillinNext');
+
+    let current = null; // {masked, missing, options}
+
+    function pickWordToBlank(text) {
+      const words = text.split(/\s+/).filter(w => /^[A-Za-z']{6,}$/.test(w));
+      if (!words.length) return null;
+      return words.sort((a,b)=>b.length-a.length)[0].replace(/[^A-Za-z']/g,'');
+    }
+
+    async function fetchQuote() {
+      const data = await getJSON(`https://api.quotable.io/quotes?limit=20`);
+      const fresh = data.results.find(q => !used.has(q._id));
+      if (!fresh) { used.clear(); saveUsedSet(USED_KEY, used); return fetchQuote(); }
+      used.add(fresh._id); saveUsedSet(USED_KEY, used);
+      return fresh.content;
+    }
+
+    async function distractors(word, n = 3) {
+      try {
+        const data = await getJSON(`https://api.datamuse.com/words?ml=${encodeURIComponent(word)}`);
+        return data.map(x => x.word).filter(w => /^[a-zA-Z']+$/.test(w) && w.toLowerCase() !== word.toLowerCase()).slice(0, n);
+      } catch {
+        return ['time','life','world'].filter(w => w.toLowerCase() !== word.toLowerCase()).slice(0, n);
+      }
+    }
+
+    function render() {
+      if (!box || !current) return;
+      const { masked, options } = current;
+      box.innerHTML = `
+        <div class="fillin-quote">${masked}</div>
+        <div class="fillin-options"></div>
+      `;
+      const optsEl = box.querySelector('.fillin-options');
+      options.forEach(opt => {
+        const b = document.createElement('button');
+        b.className = 'fillinOpt';
+        b.textContent = opt;
+        b.addEventListener('click', () => {
+          // seleccionar una (toggle visual simple)
+          $$('.fillinOpt').forEach(x => x.classList.remove('selected'));
+          b.classList.add('selected');
+          if (checkBtn) checkBtn.disabled = false;
+        });
+        optsEl.appendChild(b);
+      });
+      if (checkBtn) checkBtn.disabled = true;
+      if (nextBtn) nextBtn.disabled = true;
+    }
+
+    async function next() {
+      const quote = await fetchQuote();
+      const target = pickWordToBlank(quote) || 'life';
+      const masked = quote.replace(new RegExp(`\\b${target}\\b`, 'i'), '_____');
+      const d = await distractors(target, 3);
+      const options = [target, ...d].sort(() => Math.random() - 0.5);
+      current = { masked, missing: target, options };
+      render();
+    }
+
+    function check() {
+      const sel = box?.querySelector('.fillinOpt.selected');
+      if (!sel) return;
+      const chosen = sel.textContent || '';
+      $$('.fillinOpt').forEach(b => b.disabled = true);
+      if (chosen.toLowerCase() === current.missing.toLowerCase()) {
+        sel.classList.add('ok');
+        state.score += 3; state.level += 1;
+      } else {
+        sel.classList.add('bad');
+        state.lives -= 1;
+        if (state.lives <= 0) { alert('Game Over'); showSection('#menu'); }
+      }
+      setHUD();
+      if (nextBtn) nextBtn.disabled = false;
+    }
+
+    checkBtn?.addEventListener('click', check);
+    nextBtn?.addEventListener('click', next);
+
+    async function start() { await next(); }
+    function resetHistory() { localStorage.removeItem(USED_KEY); }
+
+    return { start, resetHistory };
+  })();
+
+  setHUD();
+  showSection('#menu');
+});
