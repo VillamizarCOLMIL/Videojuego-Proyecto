@@ -40,20 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setHUD(); return false;
   }
 
-  $$('#menu [data-start]').forEach(btn => {
-    btn.addEventListener('click', async (e) => {
-      const which = e.currentTarget.getAttribute('data-start');
-      if (which === 'quiz') { showSection('#quiz'); await quiz.start(); }
-      if (which === 'memory') { showSection('#memory'); await memory.start(); }
-      if (which === 'hangman') { showSection('#hangman'); await hangman.start(); }
-      if (which === 'fillin') { showSection('#fillin'); await fillin.start(); }
-    });
-  });
-  $$('.section [data-back]').forEach(btn => btn.addEventListener('click', () => showSection('#menu')));
-  $('#resetAll')?.addEventListener('click', () => {
-    state.score = 0; state.lives = 3; state.levelIdx = 0; state.correctStreak = 0;
-    setHUD(); showSection('#menu');
-  });
+  // ====== Niveles ======
   const LEVELS = [
     {
       name: 'A1.0', words: [
@@ -133,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ]
     },
   ];
+
   async function getDistractorsLike(word, n = 3) {
     try {
       const res = await fetch(`https://api.datamuse.com/words?ml=${encodeURIComponent(word)}&max=50`, { cache: 'no-store' });
@@ -149,10 +137,10 @@ document.addEventListener('DOMContentLoaded', () => {
       shuffle(pool); return pool.slice(0, n);
     }
   }
-  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
   function pickFromLevel(k = 1) { const arr = LEVELS[state.levelIdx].words.slice(); shuffle(arr); return arr.slice(0, k); }
 
-
+  // ====== Quiz ======
   const quiz = (() => {
     const box = $('#quizBox');
     const nextBtn = $('#quizNext');
@@ -198,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { start };
   })();
 
-
+  // ====== Memoria ======
   const memory = (() => {
     const board = document.getElementById('memoryBoard');
     const restartBtn = document.getElementById('memoryRestart');
@@ -230,12 +218,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function flip(btn) {
       if (lock || btn.classList.contains('matched') || btn.classList.contains('flipped')) return;
 
-
       btn.classList.add('flipped');
       btn.textContent = btn.dataset.label;
 
       if (!first) { first = btn; return; }
-
 
       lock = true;
       const isMatch = first.dataset.key === btn.dataset.key && first !== btn;
@@ -284,6 +270,8 @@ document.addEventListener('DOMContentLoaded', () => {
     restartBtn?.addEventListener('click', start);
     return { start };
   })();
+
+  // ====== Ahorcado ======
   const hangman = (() => {
     const wordEl = $('#hangmanWord');
     const triesEl = $('#tries');
@@ -344,6 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { start };
   })();
 
+  // ====== Completar ======
   const fillin = (() => {
     const box = $('#fillinBox');
     const checkBtn = $('#fillinCheck');
@@ -414,7 +403,44 @@ document.addEventListener('DOMContentLoaded', () => {
     return { start };
   })();
 
+  // ====== Videos por juego ======
+  function showGameVideo(which) {
+    document.querySelectorAll('.game-video').forEach(v => {
+      v.classList.add('hidden');
+      try { v.pause(); } catch {}
+    });
+    const vid = document.getElementById(which + 'Video');
+    if (vid) {
+      vid.classList.remove('hidden');
+      try { vid.currentTime = 0; vid.play(); } catch {}
+    } else {
+      console.warn('No se encontró el video para:', which);
+    }
+  }
 
+  // ====== Navegación principal ======
+  $$('#menu [data-start]').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      const which = e.currentTarget.getAttribute('data-start');
+
+      // Mostrar video correspondiente al juego seleccionado
+      showGameVideo(which);
+
+      if (which === 'quiz')   { showSection('#quiz');   await quiz.start(); }
+      if (which === 'memory') { showSection('#memory'); await memory.start(); }
+      if (which === 'hangman'){ showSection('#hangman');await hangman.start(); }
+      if (which === 'fillin') { showSection('#fillin'); await fillin.start(); }
+    });
+  });
+
+  $$('.section [data-back]').forEach(btn => btn.addEventListener('click', () => showSection('#menu')));
+
+  $('#resetAll')?.addEventListener('click', () => {
+    state.score = 0; state.lives = 3; state.levelIdx = 0; state.correctStreak = 0;
+    setHUD(); showSection('#menu');
+  });
+
+  // Inicial
   setHUD();
   showSection('#menu');
 });
