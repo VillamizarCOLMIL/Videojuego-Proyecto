@@ -328,7 +328,7 @@ button,
 .quizOpt,
 .fillinOpt,
 .memory-card {
-  background: rgba(0, 0, 0, .55);
+  background: rgba(202, 174, 255, 0.795);
   color: #000000;
   border: 1px solid rgb(255, 255, 255);
   border-radius: 12px;
